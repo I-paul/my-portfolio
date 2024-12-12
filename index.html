@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Israel Paul - Web Developer</title>
+    <title>Israel Paul - Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,14 +14,15 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <section id="home" class="hero section">
+    <section id="home" class="section hero">
         <div class="hero-content">
-            <img src="../my-portfolio/assets/paul-pro.jpg" alt="Israel Paul" class="hero-image">
+            <img src="assets/paul-pro.jpg" alt="Israel Paul" class="hero-image">
             <h1 class="hero-title">Full Stack Developer & AI Engineer</h1>
             <p class="hero-subtitle">Transforming ideas into elegant digital solutions with cutting-edge technology</p>
             <div class="hero-buttons">
@@ -63,30 +64,56 @@
         </div>
     </section>
 
+    <section id="skills" class="section">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-container">
+            <div class="skill-card">
+                <h3>Programming Languages</h3>
+                <p>Python, JavaScript, Java, C++</p>
+            </div>
+            <div class="skill-card">
+                <h3>Web Technologies</h3>
+                <p>HTML, CSS, React, Node.js</p>
+            </div>
+            <div class="skill-card">
+                <h3>Soft Skills</h3>
+                <p>English, French</p>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="section contact-section">
         <h2 class="section-title">Contact Me</h2>
-        <form class="contact-form">
+        <form id="contact-form" class="contact-form">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Your Name" required>
+                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
             </div>
             <div class="form-group">
-                <input type="email" class="form-control" placeholder="Your Email" required>
+                <input type="email" name="email" class="form-control" placeholder="Your Email" required>
             </div>
             <div class="form-group">
-                <textarea class="form-control" placeholder="Your Message" rows="5" required></textarea>
+                <textarea name="message" class="form-control" placeholder="Your Message" rows="5" required></textarea>
             </div>
             <button type="submit" class="submit-btn">Send Message</button>
         </form>
     </section>
 
-    <footer class="footer">
+    <div id="popup-overlay" class="popup-overlay">
+        <div class="popup-content">
+            <h3>Message Sent!</h3>
+            <p>Thank you for your message. I'll get back to you soon.</p>
+            <button id="close-popup" class="btn">Close</button>
+        </div>
+    </div>
+
+    <footer>
         <div class="social-links">
             <a href="https://www.linkedin.com/in/israel-paul-1b6034273/" target="_blank">LinkedIn</a>
             <a href="https://github.com/I-paul" target="_blank">GitHub</a>
         </div>
         <p>© 2024 Israel Paul. All Rights Reserved.</p>
     </footer>
-        <script src="script.js"></script>
-    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
