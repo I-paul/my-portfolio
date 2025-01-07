@@ -1,53 +1,56 @@
-import csv
-import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS to allow frontend to make requests
+CORS(app)
 
-CSV_FILE_PATH = 'contact_submissions.csv'
-
-# Ensure CSV file exists with headers
-def initialize_csv():
-    if not os.path.exists(CSV_FILE_PATH):
-
-        with open(CSV_FILE_PATH, 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(['Name', 'Email', 'Message', 'Submission Date'])
+# Initialize database
+def init_db():
+    conn = sqlite3.connect('portfolio.db')
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            message TEXT NOT NULL,
+            submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
 @app.route('/submit-contact', methods=['POST'])
 def submit_contact():
+    conn = sqlite3.connect('portfolio.db')
     try:
-        # Get JSON data from the request
         data = request.json
         
         # Validate required fields
         if not all(key in data for key in ['name', 'email', 'message']):
             return jsonify({'error': 'Missing required fields'}), 400
         
-        # Import datetime to add submission timestamp
-        from datetime import datetime
+        # Store in database
+
+        c = conn.cursor()
+        c.execute('''
+            INSERT INTO messages (name, email, message)
+            VALUES (?, ?, ?)
+        ''', (data['name'], data['email'], data['message']))
+        conn.commit()
+        conn.close()
         
-        name=str(data['name'])
-        mail=str(data['email'])
-        message=str(data['message'])
-        date=str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        # Prepare row to write to CSV
-        row = [name,mail,message,date]
-        
-        # Append to CSV file
-        with open(CSV_FILE_PATH, 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(row)
-        
-        return jsonify({'message': 'Submission successful'}), 200
+        return jsonify({
+            'name': data['name']
+        }), 200
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Initialize CSV file when script starts
-initialize_csv()
+# Initialize database when script starts
+init_db()
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -63,13 +63,12 @@ p{
 
 .navbar-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
-
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
@@ -148,6 +147,7 @@ p{
 }
 
 .hero-buttons {
+    margin-top: 12px;
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -167,7 +167,6 @@ p{
     background-color: var(--light-blue);
     transform: scale(1.05);
 }
-
 /* Projects Section */
 .projects-grid {
     display: grid;
@@ -302,4 +301,62 @@ footer {
 
 .social-links a:hover {
     color: var(--light-blue);
+}
+
+
+
+/* Search Bar */
+.search-bar {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 2px solid var(--medium-blue);
+    border-radius: 5px;
+    margin-right: 15px; /* Adds spacing between search bar and toggle button */
+    transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: var(--light-blue);
+}
+
+/* Theme Toggle Button */
+.theme-switch {
+    display: inline-flex;
+    align-items: center;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.theme-switch .slider {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background-color: var(--medium-blue);
+    border-radius: 34px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.theme-switch .slider:before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.theme-switch input:checked + .slider {
+    background-color: var(--light-blue);
+}
+
+.theme-switch input:checked + .slider:before {
+    transform: translateX(20px);
 }

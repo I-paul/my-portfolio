@@ -29,29 +29,28 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(section);
     });
 
-    // Contact Form Submission
     const contactForm = document.getElementById('contact-form');
     const popupOverlay = document.getElementById('popup-overlay');
     const closePopupBtn = document.getElementById('close-popup');
 
     // Popup functionality
-    function showPopup() {
+    function showPopup(name) {
+        const popupContent = document.querySelector('.popup-content');
+        const popupMessage = popupContent.querySelector('p');
+        popupMessage.textContent = `Thank you ${name}! I'll get back to you soon.`;
         popupOverlay.style.display = 'flex';
     }
 
     function hidePopup() {
+        console.log('Popup closed'); // Debugging log
         popupOverlay.style.display = 'none';
     }
 
-    // Close popup when close button is clicked
+    // Close popup only when close button is clicked
     closePopupBtn.addEventListener('click', hidePopup);
 
-    // Close popup when clicking outside the popup content
-    popupOverlay.addEventListener('click', (e) => {
-        if (e.target === popupOverlay) {
-            hidePopup();
-        }
-    });
+    // Remove unintended close logic
+    popupOverlay.removeEventListener('click', hidePopup);
 
     // Form submission handler
     contactForm.addEventListener('submit', async function(e) {
@@ -76,9 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                // Show success popup
-                showPopup();
-                
+                const result = await response.json();
+                // Show success popup with the sender's name
+                showPopup(result.name);
                 // Reset form
                 contactForm.reset();
             } else {
@@ -87,9 +86,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Submission error:', errorData);
                 alert('There was an error submitting your message. Please try again.');
             }
+            
         } catch (error) {
             console.error('Network error:', error);
             alert('There was a network error. Please check your connection and try again.');
         }
     });
+
+    const searchBar = document.getElementById('search-bar');
+    searchBar.addEventListener('input', () => {
+        const query = searchBar.value.toLowerCase();
+        const sections = document.querySelectorAll('section');
+        let found = false;
+
+        sections.forEach(section => {
+            if (section.innerText.toLowerCase().includes(query)) {
+                section.scrollIntoView({ behavior: 'smooth' });
+                section.classList.add('highlight');
+                found = true;
+            } else {
+                section.classList.remove('highlight');
+            }
+        });
+
+        if (!found && query.trim() !== '') {
+            alert('No matches found!');
+        }
+    });
+
+    // Light/Dark Mode Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+
+    // Preserve theme on reload
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeToggle.checked = true;
+    }
 });
